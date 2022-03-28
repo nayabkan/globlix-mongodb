@@ -27,6 +27,7 @@
                         <div class="form theme-form">
                             <form action="{{route('storeproduct')}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                <input name="user_id" type="hidden" value="{{ Auth::guard('admin')->user()->_id }}">
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
@@ -67,7 +68,7 @@
                                             <select name="brand" class="form-control">
                                                 <option value="">Select Brand</option>
                                                 @foreach($brands as $key=>$brand)
-                                                    <option value="{{$brand->id}}">{{$brand->title}}</option>
+                                                    <option value="{{$brand->_id}}">{{$brand->title}}</option>
                                                 @endforeach
                                             </select>
                                             @error('brand')
@@ -103,7 +104,7 @@
                                             <select name="category" class="form-control">
                                                 <option value="">Select Category</option>
                                                 @foreach($categories as $key=>$cat)
-                                                    <option value="{{$cat->id}}">{{$cat->title}}</option>
+                                                    <option value="{{$cat->_id}}">{{$cat->title}}</option>
                                                 @endforeach
                                             </select>
                                             @error('category')

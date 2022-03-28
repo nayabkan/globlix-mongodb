@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-6">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}"><i data-feather="home"></i></a></li>
                         <li class="breadcrumb-item">Products</li>
                         <li class="breadcrumb-item active">Product list</li>
                     </ol>
@@ -41,27 +41,31 @@
                                         <th>Name</th>
                                         <th>Category</th>
                                         <th>Price</th>
-                                        <th>Added on</th>
+                                        <th>User</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php $sl=1; @endphp
                                     @foreach($products as $product)
-                                    @php $category = $product->category; $brand = $product->brand; @endphp
+                                    @php $category = $product->category; $brand = $product->brand; 
+                                        $pro_img = json_decode($product->images);
+                                        $dumimg = "/admin/assets/images/ecommerce/product-table-1.png";
+                                    @endphp
                                     <tr>
                                         <td>{{ $sl }}</td>
                                         <td>
-                                            <img src="{{ url('/') }}/admin/assets/images/ecommerce/product-table-1.png" alt="">
+                                            <img src="{{$pro_img[0] ? url($pro_img[0]) : url($dumimg)}}" alt="img" style="max-width: 64px;">
+                                            <!-- <img src="{{ url('/') }}/admin/assets/images/ecommerce/product-table-1.png" alt=""> -->
                                         </td>
                                         <td>
                                             <h6> {{$product->title}} </h6>
                                         </td>
                                         <td>{{ \App\Models\Category::where(['_id' => $category])->pluck('title')->first() }}</td>
                                         <td>${{$product->price}}</td>
-                                        <td>{{$product->updated_at}}</td>
+                                        <td>{{ \App\Models\Admin::where(['_id' => $product->user_id])->pluck('name')->first() }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-success" title="Edit Product">Edit</a>
+                                            <a href="{{route('editproduct',$product->_id)}}" class="btn btn-success" title="Edit Product">Edit</a>
                                             <form method="POST" class="d-inline-block" action="#">
                                               @csrf 
                                               @method('delete')

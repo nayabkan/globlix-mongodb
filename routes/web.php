@@ -36,7 +36,9 @@ Route::group(['middleware' => ['adminMiddleware']], function(){
     Route::get( '/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
     Route::get( '/addproduct', [App\Http\Controllers\ProductController::class, 'create'])->name('addproduct');
     Route::post( '/storeproduct', [App\Http\Controllers\ProductController::class, 'store'])->name('storeproduct');
+    Route::get( '/editproduct/{id}', [App\Http\Controllers\ProductController::class, 'edit'])->name('editproduct');
+    Route::post( '/updateproduct', [App\Http\Controllers\ProductController::class, 'update'])->name('updateproduct');
 
-
+ 
     Route::get('logout',[App\Http\Controllers\AdminController::class, 'logout'])->name('logout');
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -41,6 +42,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $data['user_id'] = $request->user_id;
         $this->validate($request,[
             'title'=>'string|required',
             'sku'=>'string|required',
@@ -111,7 +113,7 @@ class ProductController extends Controller
         $brand=Brand::orderBy('title','ASC')->get();
         $product=Product::findOrFail($id);
 
-        return view('admin.products.edit')->with('product',$product)->with('category',$category)->with('brands',$brand);
+        return view('admin.products.edit')->with('product',$product)->with('categories',$category)->with('brands',$brand);
     }
 
     /**
@@ -126,60 +128,30 @@ class ProductController extends Controller
         $category=Category::findOrFail($id);
         $this->validate($request,[
             'title'=>'string|required',
-            'image'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'parent_id'=>'nullable',
-            'banner' => 'nullable|mimes:jpeg,jpg,png,gif,svg|max:100000',
+            'sku'=>'string|required',
+            'short_description'=>'string|required',
+            'category'=>'required',
+            'brand'=>'required',
+            'price'=>'integer|required',
+            'sale_price'=>'nullable|integer',
+            'description'=>'string|required',
+            'images'=>'required',
+            'images.*' => 'mimes:jpeg,png,jpg,gif,svg'
         ]);
         $data= $request->all();
-        if($request->image != ''){
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images/category'), $imageName);
-            $data['image'] = '/images/category/'.$imageName;
-            if($category->image != "" && file_exists(public_path().$category->image)){
-                $file_path = public_path().$category->image;
-                unlink($file_path);
-            }
-        }else{
-            $data['image']=$category->image;
-        }
-
-        if($request->banner!= '' || $request->banner!=null){
-            $catBanner = time().'.'.$request->banner->extension();
-            $request->banner->move(public_path('images/category'), $catBanner);
-            $data['banner'] = '/images/category/'.$catBanner;
-            //dd($category->banner);
-            if($category->banner != null && file_exists(public_path().$category->banner)){
-                $file_path = public_path().$category->banner;
-                unlink($file_path);
-            }
-        }else{
-            $data['banner']=$category->banner;
-        }
-
-        $slug=Str::slug($request->title);
-        $count=Category::where('slug',$slug)->count();
-        if($count>0){
-            $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
-        }
-        $data['slug']=$slug;
         
 
-        if($request->is_parent=='on'){
-            $data['is_parent']=1;
-            $data['parent_id']="";
-        }else{
-            $data['is_parent']=0;
-        }
+        
         //dd($data);
         // return $data;
-        $status=$category->fill($data)->save();
-        if($status){
-            request()->session()->flash('success','Category successfully updated');
-        }
-        else{
-            request()->session()->flash('error','Error occurred, Please try again!');
-        }
-        return redirect()->route('category.index');
+        //$status=$category->fill($data)->save();
+        // if($status){
+        //     request()->session()->flash('success','Category successfully updated');
+        // }
+        // else{
+        //     request()->session()->flash('error','Error occurred, Please try again!');
+        // }
+        return redirect()->route('products');
     }
 
     /**

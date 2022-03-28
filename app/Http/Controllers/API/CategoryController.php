@@ -80,6 +80,39 @@ class CategoryController extends Controller
         return response()->json($apidata);
     }
 
+    public function parent(){
+        $parentcats=Category::where([['parent_id', '=', ''],['is_parent', '=', 1],['status', '=', 'active']])->get();
+
+        foreach ($parentcats as $key => $cats) {
+            // $id = $cats;
+            $apidata[$key]['_id']= $cats->_id;
+            $apidata[$key]['title']= $cats->title;
+            $apidata[$key]['slug']= $cats->slug;
+            $apidata[$key]['image']= url($cats->image);
+            $apidata[$key]['status']= $cats->status;
+            $apidata[$key]['created_at']= $cats->created_at;
+            $apidata[$key]['updated_at']= $cats->updated_at;
+        }
+        return response()->json($apidata);
+    }
+
+    public function childsbyparent($id){
+        $childcats=Category::where([['parent_id', '=', $id],['status', '=', 'active']])->get();
+
+        foreach ($childcats as $key => $cats) {
+            // $id = $cats;
+            $apidata[$key]['_id']= $cats->_id;
+            $apidata[$key]['title']= $cats->title;
+            $apidata[$key]['slug']= $cats->slug;
+            $apidata[$key]['parent_id']= $cats->parent_id;
+            $apidata[$key]['image']= url($cats->image);
+            $apidata[$key]['status']= $cats->status;
+            $apidata[$key]['created_at']= $cats->created_at;
+            $apidata[$key]['updated_at']= $cats->updated_at;
+        }
+        return response()->json($apidata);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
