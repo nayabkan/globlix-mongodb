@@ -39,6 +39,13 @@ Route::group(['middleware' => ['adminMiddleware']], function(){
     Route::get( '/editproduct/{id}', [App\Http\Controllers\ProductController::class, 'edit'])->name('editproduct');
     Route::post( '/updateproduct', [App\Http\Controllers\ProductController::class, 'update'])->name('updateproduct');
 
+    Route::get( '/auctions', [App\Http\Controllers\AuctionController::class, 'index'])->name('auctions');
+    Route::get( '/addauction', [App\Http\Controllers\AuctionController::class, 'create'])->name('addauction');
+    Route::post( '/storeauction', [App\Http\Controllers\AuctionController::class, 'store'])->name('storeauction');
+    Route::get( '/editauction/{id}', [App\Http\Controllers\AuctionController::class, 'edit'])->name('editauction');
+    Route::post( '/updateauction/{id}', [App\Http\Controllers\AuctionController::class, 'update'])->name('updateauction');
+    Route::post( '/deleteauction', [App\Http\Controllers\AuctionController::class, 'destroy'])->name('deleteauction');
+
  
     Route::get('logout',[App\Http\Controllers\AdminController::class, 'logout'])->name('logout');
 });
