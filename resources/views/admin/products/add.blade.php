@@ -27,9 +27,9 @@
                         <div class="form theme-form">
                             <form action="{{route('storeproduct')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <input name="user_id" type="hidden" value="{{ Auth::guard('admin')->user()->_id }}">
+                                <!-- <input name="user_id" type="hidden" value="{{ Auth::guard('admin')->user()->_id }}"> -->
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-md-8">
                                         <div class="mb-3">
                                             <label>Product Name <span class="text-danger">*</span></label>
                                             <input class="form-control" name="title" type="text" placeholder="Product name" value="{{old('title')}}">
@@ -38,9 +38,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label>SKU <span class="text-danger">*</span></label>
                                             <input class="form-control" name="sku" type="text" placeholder="Product sku" value="{{old('sku')}}" required>
@@ -62,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="row" id="brand_div">
-                                    <div class="col">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label>Brands</label>
                                             <select name="brand" class="form-control">
@@ -76,29 +74,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label>Price <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="number" name="price" step="0.01" placeholder="price" value="{{old('price')}}">
-                                            @error('price')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label>Sale Price </label>
-                                            <input class="form-control" type="number" name="sale_price" step="0.01" placeholder="sale price" value="{{old('sale_price')}}">
-                                            @error('sale_price')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" id="cat_div">
-                                    <div class="col">
                                         <div class="mb-3">
                                             <label>Category</label>
                                             <select name="category" class="form-control">
@@ -108,6 +84,26 @@
                                                 @endforeach
                                             </select>
                                             @error('category')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label>Price <span class="text-danger">*</span></label>
+                                            <input class="form-control digits" type="number" name="price" placeholder="price" value="{{old('price')}}">
+                                            @error('price')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label>Sale Price </label>
+                                            <input class="form-control digits" type="number" name="sale_price" step="0.01" placeholder="sale price" value="{{old('sale_price')}}">
+                                            @error('sale_price')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>
@@ -190,6 +186,22 @@
                                             <label>Product Description</label>
                                             <textarea class="form-control" name="description" placeholder="Full Description" id="" rows="5">{{old('description')}}</textarea>
                                             @error('description')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label>Vendor Name <span class="text-danger">*</span></label>
+                                            <select name="vendor_id" class="form-control">
+                                                <option value="">Select Vendor</option>
+                                                @foreach($vendors as $key=>$vendor)
+                                                    <option value="{{$vendor->_id}}">{{$vendor->firstname}} {{$vendor->lastname}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('vendor_id')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>

@@ -36,6 +36,7 @@
                                         <th>#</th>
                                         <th>Product Name</th>
                                         <th>Vendor</th>
+                                        <th>Start Date</th>
                                         <th>Expire Date</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -53,6 +54,7 @@
                                             <h6> {{ \App\Models\Product::where(['_id' => $product_id])->pluck('title')->first() }} </h6>
                                         </td>
                                         <td>{{ \App\Models\Vendor::where(['_id' => $vendor_id])->pluck('firstname')->first() }}</td>
+                                        <td>{{ $aucprod->start_date }}</td>
                                         <td>{{ $aucprod->expire_date }}</td>
                                         @if($aucprod->status=='active')
                                             <td class="font-success">{{$aucprod->status}}</td>

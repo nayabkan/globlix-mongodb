@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
                                             <label>Category Image <span class="text-danger">*</span></label>
@@ -72,13 +72,13 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row d-none" id="parent_banner_div">
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label>Category Banner <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="file" name="banner" value="{{old('banner')}}">
-                                            @error('banner')
+                                            <label>Category Image <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="file" name="image" value="{{old('image')}}">
+                                            @error('image')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>

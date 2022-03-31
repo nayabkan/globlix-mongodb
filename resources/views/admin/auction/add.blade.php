@@ -62,8 +62,21 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
+                                            <label>Start Date <span class="text-danger">*</span></label>
+                                            <input class="form-control digits" name="start_date" id="example-datetime-local-input" type="datetime-local" placeholder="2022-01-19T18:45:00" value="{{old('start_date')}}">
+                                            <!-- <input class="form-control" type="date" step="0.01" name="start_date" placeholder="Expire Date" value="{{old('start_date')}}"> -->
+                                            @error('start_date')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">
                                             <label>Expire Date <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="date" step="0.01" name="expire_date" placeholder="Expire Date" value="{{old('expire_date')}}">
+                                            <input class="form-control digits" name="expire_date" id="example-datetime-local-input" type="datetime-local" placeholder="2022-01-19T18:45:00" value="{{old('expire_date')}}">
+                                            <!-- <input class="form-control" type="date" step="0.01" name="expire_date" placeholder="Expire Date" value="{{old('expire_date')}}"> -->
                                             @error('expire_date')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror

@@ -58,7 +58,7 @@
                                                     @if($category->id != $parent_cat->id)
                                                         <option value="{{$parent_cat->id}}" {{(($parent_cat->id==$category->parent_id) ? 'selected' : '')}}>{{$parent_cat->title}}</option>
                                                     @endif
-                                                    @endforeach
+                                                @endforeach
                                             </select>
                                             @error('parent_id')
                                                 <span class="text-danger">{{$message}}</span>
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row {{(($category->is_parent==0)? 'd-none' : '')}}" id="parent_banner_div">
                                     <div class="col">
                                         <div class="mb-3">
                                             <label>Category Image <span class="text-danger">*</span></label>
@@ -78,19 +78,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row {{(($category->is_parent==0)? 'd-none' : '')}}" id="parent_banner_div">
+                                <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label>Category Banner <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="file" name="banner">
-                                            <img src="{{ $category->banner ? url($category->banner) : ''}}" alt="" style="max-width: 64px;">
-                                            @error('banner')
+                                            <label>Status <span class="text-danger">*</span></label>
+                                            <select name="status" class="form-control">
+                                                <option value="active" {{(($category->status=='active')? 'selected' : '')}}>Active</option>
+                                                <option value="deactivate" {{(($category->status=='deactivate')? 'selected' : '')}}>Deactivate</option>
+                                            </select>
+                                            @error('status')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="status" value="{{$category->status}}">
                                 <div class="row">
                                     <div class="col">
                                         <div class="text-end row">

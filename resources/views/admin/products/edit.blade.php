@@ -27,9 +27,9 @@
                         <div class="form theme-form">
                             <form action="{{route('updateproduct')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <input name="user_id" type="hidden" value="{{ $product->user_id }}">
+                                <!-- <input name="user_id" type="hidden" value="{{ $product->user_id }}"> -->
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-md-8">
                                         <div class="mb-3">
                                             <label>Product Name <span class="text-danger">*</span></label>
                                             <input class="form-control" name="title" type="text" placeholder="Product name" value="{{$product->title}}">
@@ -38,9 +38,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label>SKU <span class="text-danger">*</span></label>
                                             <input class="form-control" name="sku" type="text" placeholder="Product sku" value="{{$product->sku}}" required>
@@ -62,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="row" id="brand_div">
-                                    <div class="col">
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label>Brands</label>
                                             <select name="brand" class="form-control">
@@ -76,29 +74,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label>Price <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="number" name="price" step="0.01" placeholder="price" value="{{$product->price}}">
-                                            @error('price')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label>Sale Price </label>
-                                            <input class="form-control" type="number" name="sale_price" step="0.01" placeholder="sale price" value="{{$product->sale_price}}">
-                                            @error('sale_price')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" id="cat_div">
-                                    <div class="col">
                                         <div class="mb-3">
                                             <label>Category</label>
                                             <select name="category" class="form-control">
@@ -108,6 +84,26 @@
                                                 @endforeach
                                             </select>
                                             @error('category')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label>Price <span class="text-danger">*</span></label>
+                                            <input class="form-control digits" type="number" name="price" placeholder="price" value="{{$product->price}}">
+                                            @error('price')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label>Sale Price </label>
+                                            <input class="form-control digits" type="number" name="sale_price" placeholder="sale price" value="{{$product->sale_price}}">
+                                            @error('sale_price')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>
@@ -140,7 +136,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="status" value="{{$product->status}}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label>Vendor Name <span class="text-danger">*</span></label>
+                                            <select name="vendor_id" class="form-control">
+                                                <option value="">Select Vendor</option>
+                                                @foreach($vendors as $key=>$vendor)
+                                                    <option value="{{$vendor->_id}}" {{(($product->vendor_id==$vendor->_id)? 'selected' : '')}}>{{$vendor->firstname}} {{$vendor->lastname}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('vendor_id')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label>Product Status <span class="text-danger">*</span></label>
+                                            <select name="status" class="form-control">
+                                                <option value="active" {{(($product->status=='active')? 'selected' : '')}}>Active</option>
+                                                <option value="deactivate" {{(($product->status=='deactivate')? 'selected' : '')}}>Deactivate</option>
+                                            </select>
+                                            @error('status')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="text-end">

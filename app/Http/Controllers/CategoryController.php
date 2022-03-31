@@ -40,26 +40,19 @@ class CategoryController extends Controller
     {
         $this->validate($request,[
             'title'=>'string|required',
-            'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'parent_id'=>'nullable',
-            'banner' => 'nullable|mimes:jpeg,jpg,png,gif,svg|max:100000',
+            'image' => 'nullable|mimes:jpeg,jpg,png,gif,svg|max:100000',
         ]);
 
         $data= $request->all();
 
-        $imageName = time().'.'.$request->image->extension();
-        $request->image->move(public_path('images/category'), $imageName);
-        //$img = $request->image->storeAs('images/category', $imageName);
+        if($request->image!= '' || $request->image!=null){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/category'), $imageName);
         
-        $data['image'] = '/images/category/'.$imageName;
-
-        if($request->banner!= '' || $request->banner!=null){
-            $catBanner = time().'.'.$request->banner->extension();
-            $request->banner->move(public_path('images/category'), $catBanner);
-        
-            $data['banner'] = '/images/category/'.$catBanner;
+            $data['image'] = '/images/category/'.$imageName;
         }else{
-            $data['banner']='';
+            $data['image']='';
         }
 
 
@@ -122,12 +115,11 @@ class CategoryController extends Controller
         $category=Category::findOrFail($id);
         $this->validate($request,[
             'title'=>'string|required',
-            'image'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'parent_id'=>'nullable',
-            'banner' => 'nullable|mimes:jpeg,jpg,png,gif,svg|max:100000',
+            'image' => 'nullable|mimes:jpeg,jpg,png,gif,svg|max:100000',
         ]);
         $data= $request->all();
-        if($request->image != ''){
+        if($request->image != '' || $request->banner!=null){
             $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('images/category'), $imageName);
             $data['image'] = '/images/category/'.$imageName;
@@ -139,26 +131,12 @@ class CategoryController extends Controller
             $data['image']=$category->image;
         }
 
-        if($request->banner!= '' || $request->banner!=null){
-            $catBanner = time().'.'.$request->banner->extension();
-            $request->banner->move(public_path('images/category'), $catBanner);
-            $data['banner'] = '/images/category/'.$catBanner;
-            //dd($category->banner);
-            if($category->banner != null && file_exists(public_path().$category->banner)){
-                $file_path = public_path().$category->banner;
-                unlink($file_path);
-            }
-        }else{
-            $data['banner']=$category->banner;
-        }
-
         $slug=Str::slug($request->title);
         $count=Category::where('slug',$slug)->count();
         if($count>0){
             $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
         }
         $data['slug']=$slug;
-        
 
         if($request->is_parent=='on'){
             $data['is_parent']=1;
@@ -196,12 +174,8 @@ class CategoryController extends Controller
             if(count($child_cat_id)>0){
                 Category::whereIn('_id', $child_cat_id)->update(array('parent_id' => '', 'is_parent' =>'1'));
             }
-            if($category->image != ""){
+            if($category->image != "" && file_exists(public_path().$category->image)){
                 $file_path = public_path().$category->image;
-                unlink($file_path);
-            }
-            if($category->banner != ""){
-                $file_path = public_path().$category->banner;
                 unlink($file_path);
             }
             request()->session()->flash('success','Category successfully deleted');

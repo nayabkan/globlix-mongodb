@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Vendor;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,7 +32,8 @@ class ProductController extends Controller
     {
         $category=Category::orderBy('title','ASC')->get();
         $brand=Brand::orderBy('title','ASC')->get();
-        return view('admin.products.add')->with('categories',$category)->with('brands',$brand);
+        $vendor=Vendor::all();
+        return view('admin.products.add')->with('categories',$category)->with('brands',$brand)->with('vendors',$vendor);
     }
 
     /**
@@ -52,6 +54,7 @@ class ProductController extends Controller
             'price'=>'integer|required',
             'sale_price'=>'nullable|integer',
             'description'=>'string|required',
+            'vendor_id' =>'string|required',
             'images'=>'required',
             'images.*' => 'mimes:jpeg,png,jpg,gif,svg'
             // 'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -111,9 +114,10 @@ class ProductController extends Controller
     { 
         $category=Category::orderBy('title','ASC')->get();
         $brand=Brand::orderBy('title','ASC')->get();
+        $vendor=Vendor::all();
         $product=Product::findOrFail($id);
 
-        return view('admin.products.edit')->with('product',$product)->with('categories',$category)->with('brands',$brand);
+        return view('admin.products.edit')->with('product',$product)->with('categories',$category)->with('brands',$brand)->with('vendors',$vendor);
     }
 
     /**
@@ -125,7 +129,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category=Category::findOrFail($id);
+        $product=Product::findOrFail($id);
         $this->validate($request,[
             'title'=>'string|required',
             'sku'=>'string|required',
@@ -135,9 +139,41 @@ class ProductController extends Controller
             'price'=>'integer|required',
             'sale_price'=>'nullable|integer',
             'description'=>'string|required',
-            'images'=>'required',
+            'vendor_id' =>'string|required',
+            'status' =>'string|required',
             'images.*' => 'mimes:jpeg,png,jpg,gif,svg'
         ]);
+
+        if($request->images != ''){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/products'), $imageName);
+            $data['image'] = '/images/products/'.$imageName;
+            if($category->image != "" && file_exists(public_path().$category->image)){
+                $file_path = public_path().$category->image;
+                unlink($file_path);
+            }
+        }else{
+            $data['image']=$category->image;
+        }
+
+        if($request->hasfile('images'))
+        {
+            foreach($request->file('images') as $key => $file)
+            {
+                $filname= time().$key;
+                $imageName = $filname.'.'.$file->extension();
+                $file->move(public_path('images/products'), $imageName);
+                $imgs[$key] = '/images/products/'.$imageName;
+                if($product->images != "" && file_exists(public_path().$product->images)){
+                    $file_path = public_path().$product->images;
+                    unlink($file_path);
+                }
+            }
+            $data['images'] = json_encode($imgs);
+        }else{
+            $data['images'] ='';
+        }
+
         $data= $request->all();
         
 
@@ -146,7 +182,7 @@ class ProductController extends Controller
         // return $data;
         //$status=$category->fill($data)->save();
         // if($status){
-        //     request()->session()->flash('success','Category successfully updated');
+        //     request()->session()->flash('success','Product successfully updated');
         // }
         // else{
         //     request()->session()->flash('error','Error occurred, Please try again!');
@@ -162,8 +198,8 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id)
     { 
-        $category=Category::findOrFail($id);
-        $child_cat_id=Category::where('parent_id',$id)->pluck('_id');
+        $category=Product::findOrFail($id);
+        $child_cat_id=Product::where('parent_id',$id)->pluck('_id');
         //return $child_cat_id;
         // dd($child_cat_id);
         $status=$category->delete();

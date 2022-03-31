@@ -38,7 +38,6 @@
                                         <th>Name</th>
                                         <th>Is Parent</th>
                                         <th>Parent Name</th>
-                                        <th>User</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -57,7 +56,6 @@
                                         </td>
                                         <td>{{(($category->is_parent==1)? 'Yes': 'No')}}</td>
                                         <td>{{ \App\Models\Category::where(['_id' => $parent_id])->pluck('title')->first() }}</td>
-                                        <td>Admin</td>
                                         @if($category->status=='active')
                                             <td class="font-success">{{$category->status}}</td>
                                         @else

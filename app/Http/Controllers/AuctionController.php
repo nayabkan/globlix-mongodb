@@ -40,6 +40,7 @@ class AuctionController extends Controller
         $this->validate($request,[
             'product_id'=>'string|required',
             'vendor_id'=>'string|required',
+            'start_date'=>'required',
             'expire_date'=>'required',
         ]);
 
@@ -94,6 +95,7 @@ class AuctionController extends Controller
         $this->validate($request,[
             'product_id'=>'string|required',
             'vendor_id'=>'string|required',
+            'start_date'=>'required',
             'expire_date'=>'required',
         ]);
         $data= $request->all();
@@ -117,7 +119,7 @@ class AuctionController extends Controller
     public function destroy(Request $request, $id)
     { 
         $auction=Auction::findOrFail($id);
-        $child_cat_id=Category::where('parent_id',$id)->pluck('_id');
+        $child_cat_id=Auctionbid::where('parent_id',$id)->pluck('_id');
         
         $status=$category->delete();
         

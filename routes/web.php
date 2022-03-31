@@ -33,6 +33,7 @@ Route::group(['middleware' => ['adminMiddleware']], function(){
 	Route::get( '/allusers', [App\Http\Controllers\AdminController::class, 'users'])->name('allusers');
     Route::get( '/vendors', [App\Http\Controllers\AdminController::class, 'vendors'])->name('vendors');
     Route::resource( '/countries', \App\Http\Controllers\CountryController::class );
+    
     Route::get( '/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
     Route::get( '/addproduct', [App\Http\Controllers\ProductController::class, 'create'])->name('addproduct');
     Route::post( '/storeproduct', [App\Http\Controllers\ProductController::class, 'store'])->name('storeproduct');
