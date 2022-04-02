@@ -3,9 +3,12 @@
 /public/storage
 /storage/*.key
 /vendor
+/public/.htaccess
+/public/index.php
 .env
 .env.example
 .env.local
+.local.env_local
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
