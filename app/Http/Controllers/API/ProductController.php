@@ -13,7 +13,97 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index(){
+    public function __construct() {
+        // $this->middleware('assign.guard:vendor', ['except' => ['index']]);
+    }
+
+    public function index()
+    {
+        $products=Product::where([['status', '=', 'active']])->get();
+        $apidata=[];
+        $gallery=[];
+
+        if(!$products->isEmpty()){
+            foreach ($products as $key => $prods) {
+                $apidata[$key]['_id']= $prods->_id;
+                $apidata[$key]['title']= $prods->title;
+                $apidata[$key]['slug']= $prods->slug;
+                $apidata[$key]['sku']= $prods->sku;
+                $apidata[$key]['price']= $prods->price;
+                $apidata[$key]['sale_price']= $prods->sale_price;
+
+                $cat_images=json_decode($prods->images);
+                $prodImages=[];
+                if( sizeof($cat_images) ){
+                    foreach ($cat_images as $ke => $catimg) {
+                        $prodImages[$ke]= url($catimg);
+                    }
+                    $apidata[$key]['images'] =$prodImages;
+                }
+                
+                $apidata[$key]['created_at']= $prods->created_at;
+                $apidata[$key]['updated_at']= $prods->updated_at;
+            }
+        }
+        
+        return response()->json($apidata);
+    }
+
+    public function productDetails(Request $request){
+        $id= $request->product_id;
+        //$childcats=Category::where([['parent_id', '=', $id],['status', '=', 'active']])->get();
+        $Product=Product::where([['_id', '=', $id],['status', '=', 'active']])->first();
+        $apidata=[];
+        $vendors=[];
+        $products=[];
+        
+        if($Product != null){
+            $apidata['_id']= $Product->_id;
+            $apidata['title']= $Product->title;
+            $apidata['slug']= $Product->slug;
+            $apidata['sku']= $Product->sku;
+            $apidata['price']= $Product->price;
+            $apidata['sale_price']= $Product->sale_price;
+            $apidata['short_description']= $Product->short_description;
+            $apidata['description']= $Product->description;
+            $brand_name = \App\Models\Brand::where(['_id' => $Product->brand])->pluck('title')->first();
+            $apidata['brand']= $brand_name;
+            $category_name = \App\Models\Category::where(['_id' => $Product->category])->pluck('title')->first();
+            $apidata['category']= $category_name;
+            $vendorDetail=Vendor::where([['_id', '=', $Product->user_id]])->first();
+            if($vendorDetail != null){
+                $vendors['_id']= $vendorDetail->_id;
+                $vendors['email']= $vendorDetail->email;
+                $vendors['firstname']= $vendorDetail->firstname;
+                $vendors['lastname']= $vendorDetail->lastname;
+                $vendors['mobile']= $vendorDetail->mobile;
+                $vendors['website']= $vendorDetail->website;
+                $vendors['companyname']= $vendorDetail->companyname;
+                $vendors['country']= $vendorDetail->country;
+                $vendors['areacode']= $vendorDetail->areacode;
+                $vendors['status']= $vendorDetail->status;
+                
+            }
+            $apidata['vendor']= $vendors;
+           
+            $cat_images=json_decode($Product->images);
+            $prodImages=[];
+            if( sizeof($cat_images) ){
+                foreach ($cat_images as $ke => $catimg) {
+                    $prodImages[$ke]= url($catimg);
+                }
+                $apidata['images'] =$prodImages;
+            }
+            
+            $apidata['created_at']= $Product->created_at;
+            $apidata['updated_at']= $Product->updated_at;
+        }
+
+        return response()->json($apidata);
+    }
+
+
+    public function index2(){
         $products=Product::where([['status', '=', 'active']])->get();
         $id='';
         $apidata=[];

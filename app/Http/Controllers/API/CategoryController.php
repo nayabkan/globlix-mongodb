@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Str;
  
 class CategoryController extends Controller
@@ -96,20 +97,54 @@ class CategoryController extends Controller
         return response()->json($apidata);
     }
 
-    public function childsbyparent($id){
+    public function childsbyparent(Request $request){
+        $id= $request->cat_id;
         $childcats=Category::where([['parent_id', '=', $id],['status', '=', 'active']])->get();
+        $catProducts=Product::where([['category', '=', $id],['status', '=', 'active']])->get();
+        $apidata=[];
+        $apicats=[];
+        $products=[];
+        
+        $apidata['category_id']= $id;
 
-        foreach ($childcats as $key => $cats) {
-            // $id = $cats;
-            $apidata[$key]['_id']= $cats->_id;
-            $apidata[$key]['title']= $cats->title;
-            $apidata[$key]['slug']= $cats->slug;
-            $apidata[$key]['parent_id']= $cats->parent_id;
-            $apidata[$key]['image']= url($cats->image);
-            $apidata[$key]['status']= $cats->status;
-            $apidata[$key]['created_at']= $cats->created_at;
-            $apidata[$key]['updated_at']= $cats->updated_at;
+        if(!$childcats->isEmpty()){
+            foreach ($childcats as $key => $cats) {
+                $apicats['_id']= $cats->_id;
+                $apicats['title']= $cats->title;
+                $apicats['slug']= $cats->slug;
+                $apicats['parent_id']= $cats->parent_id;
+                $apicats['image']= url($cats->image);
+                $apicats['status']= $cats->status;
+                $apicats['created_at']= $cats->created_at;
+                $apicats['updated_at']= $cats->updated_at;
+            }
         }
+
+        $apidata['child_cats']= $apicats;
+
+        if(!$catProducts->isEmpty()){
+            foreach ($catProducts as $key => $prods) {
+                $products[$key]['_id']= $prods->_id;
+                $products[$key]['title']= $prods->title;
+                $products[$key]['slug']= $prods->slug;
+                $products[$key]['sku']= $prods->sku;
+                $products[$key]['price']= $prods->price;
+                $products[$key]['sale_price']= $prods->sale_price;
+
+                $cat_images=json_decode($prods->images);
+                $prodImages=[];
+                if( sizeof($cat_images) ){
+                    foreach ($cat_images as $ke => $catimg) {
+                        $prodImages[$ke]= url($catimg);
+                    }
+                    $products[$key]['images'] =$prodImages;
+                }
+                $products[$key]['created_at']= $prods->created_at;
+                $products[$key]['updated_at']= $prods->updated_at;
+            }
+        }
+        $apidata['products']= $products;
+
         return response()->json($apidata);
     }
 

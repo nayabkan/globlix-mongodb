@@ -20,13 +20,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['api'], 'namespace' => 'Api'], function(){
 
-    Route::get( 'category', [App\Http\Controllers\API\CategoryController::class, 'index']);
+    //Route::get( 'category', [App\Http\Controllers\API\CategoryController::class, 'index']);
     Route::get( 'parentcats', [App\Http\Controllers\API\CategoryController::class, 'parent']);
-    Route::get( 'childcats/{id}', [App\Http\Controllers\API\CategoryController::class, 'childsbyparent']);
+    Route::post( 'childcats', [App\Http\Controllers\API\CategoryController::class, 'childsbyparent']);
     Route::get( 'inquiry', [App\Http\Controllers\API\InquiryController::class, 'index']);
     Route::get( 'country', [App\Http\Controllers\API\CountryController::class, 'index']);
     Route::get( 'brands', [App\Http\Controllers\API\BrandController::class, 'index']);
     Route::get( 'products', [App\Http\Controllers\API\ProductController::class, 'index']);
+    Route::post( 'productdetails', [App\Http\Controllers\API\ProductController::class, 'productDetails']);
+    Route::get( 'auctions', [App\Http\Controllers\API\AuctionController::class, 'index']);
 
     // Vendors middleware routes here
     Route::group(['prefix' => 'vendor','middleware' => ['assign.guard:vendor']],function ()
