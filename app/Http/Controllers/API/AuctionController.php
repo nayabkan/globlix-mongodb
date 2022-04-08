@@ -63,7 +63,7 @@ class AuctionController extends Controller
                     $vendors['companyname']= $vendorDetail->companyname;
                 }
                 $apidata[$key]['vendor']= $vendors;
-                
+
                 $apidata[$key]['created_at']= $aucts->created_at;
                 $apidata[$key]['updated_at']= $aucts->updated_at;
 
@@ -71,6 +71,76 @@ class AuctionController extends Controller
         }
 
         return response()->json($apidata);
+    }
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id'=>'string|required',
+            'vendor_id'=>'string|required',
+            'start_date'=>'required',
+            'expire_date'=>'required',
+        ]);
+
+        $data= $request->all();
+
+        $newAuction = new Auction([
+          'product_id' => $request->product_id,
+          'vendor_id' => $request->vendor_id,
+          'start_date' => $request->start_date,
+          'expire_date' => $request->expire_date,
+          'status' => 'active',
+        ]);
+
+        $newAuction->save();
+
+        return response()->json([
+        	'success' => true,
+            'message' => 'Auction Successfully Created.',
+            'data' => $newAuction
+        ], 201);
+    }
+
+    public function show(Request $request)
+    {
+        $id= $request->auction_id;
+        $auction = Auction::findOrFail($id);
+        return response()->json([
+        	'success' => true,
+            'data' => $auction
+        ], 201);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'title'=>'string|required',
+            'parent_id'=>'nullable'
+        ]);
+        
+        if($request->auction_id == ''){
+            return response()->json([
+                'success' => false,
+                'message' => 'auction id not found.',
+            ], 500);
+        }else{
+            $id= $request->auction_id;
+            $auction = Auction::findOrFail($id);
+
+        }
+
+        
+        
+
+        
+
+        $category->title = $request->get('title');
+        $category->parent_id = $request->get('parent_id');
+
+        $category->save();
+
+        return response()->json($category);
     }
 
 

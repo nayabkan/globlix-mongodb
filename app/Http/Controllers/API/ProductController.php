@@ -147,4 +147,69 @@ class ProductController extends Controller
         
         return response()->json($apidata);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title'=>'string|required',
+            'sku'=>'string|required',
+            'short_description'=>'string|required',
+            'category'=>'required',
+            'brand'=>'required',
+            'price'=>'integer|required',
+            'sale_price'=>'nullable|integer',
+            'description'=>'string|required',
+            'vendor_id' =>'string|required',
+            'images'=>'required',
+            'images.*' => 'mimes:jpeg,png,jpg,gif,svg'
+        ]);
+
+        $data= $request->all();
+
+        if($request->hasfile('images'))
+        {
+            foreach($request->file('images') as $key => $file)
+            {
+                $filname= time().$key;
+                $imageName = $filname.'.'.$file->extension();
+                $file->move(public_path('images/products'), $imageName);
+                $imgs[$key] = '/images/products/'.$imageName;
+            }
+            $images = json_encode($imgs);
+        }else{
+            $images ='';
+        }
+
+        $slug=Str::slug($request->title);
+        $count=Product::where('slug',$slug)->count();
+        if($count>0){
+            $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+        }
+        $slug=$slug;
+
+        $product = new Product([
+          'title' => $request->title,
+          'slug' => $slug,
+          'sku' => $request->sku,
+          'short_description' => $request->short_description,
+          'category' => $request->category,
+          'brand' => $request->brand,
+          'sale_price' => $request->sale_price,
+          'price' => $request->price,
+          'description' => $request->description,
+          'vendor_id' => $request->vendor_id,
+          'images' => $images,
+          'status' => 'active',
+        ]);
+
+        $product->save();
+
+        return response()->json([
+        	'success' => true,
+            'message' => 'Product Successfully Added.',
+            'data' => $product
+        ], 201);
+    }
+
+
 }

@@ -38,6 +38,9 @@ Route::group(['middleware' => ['api'], 'namespace' => 'Api'], function(){
         Route::post('/logout', [App\Http\Controllers\VendorController::class, 'logout'])->middleware('jwt.auth');
         Route::post('/refresh', [App\Http\Controllers\VendorController::class, 'refresh'])->middleware('jwt.auth');
         Route::get('/user-profile', [App\Http\Controllers\VendorController::class, 'userProfile'])->middleware('jwt.auth');
+
+        Route::post('/createproduct', [App\Http\Controllers\ProductController::class, 'store'])->middleware('jwt.auth');
+        Route::post('/createauction', [App\Http\Controllers\AuctionController::class, 'store'])->middleware('jwt.auth');
     });
 
 
