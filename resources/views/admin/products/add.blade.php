@@ -59,6 +59,21 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="is_featured">Is Featured</label><br>
+                                            <input type="checkbox" name='is_featured' class="" id='is_featured'> Yes                        
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="white_labeled">White Label</label><br>
+                                            <input type="checkbox" name='white_label' class="" id='white_labeled'> Yes                        
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="row" id="brand_div">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -93,7 +108,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label>Price <span class="text-danger">*</span></label>
-                                            <input class="form-control digits" type="number" name="price" placeholder="price" value="{{old('price')}}">
+                                            <input class="form-control digits" type="number" name="price" step="0.01" placeholder="price" value="{{old('price')}}">
                                             @error('price')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
@@ -109,72 +124,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="row">
-                                    <div class="col">
-                                        <div class="mb-3">
-                                            <label>Price <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="number" name="price" placeholder="price" value="{{old('price')}}">
-                                        </div>
-                                    </div>
-                                </div> -->
-                                <!-- <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="mb-3">
-                                            <label>Product Rate</label>
-                                            <input class="form-control" type="text" placeholder="Enter project Rate">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="mb-3">
-                                            <label>Product Type</label>
-                                            <select class="form-select">
-                                            <option>Hourly</option>
-                                            <option>Fix price</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="mb-3">
-                                            <label>Priority</label>
-                                            <select class="form-select">
-                                            <option>Low</option>
-                                            <option>Medium</option>
-                                            <option>High</option>
-                                            <option>Urgent</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="mb-3">
-                                            <label>Project Size</label>
-                                            <select class="form-select">
-                                            <option>Small</option>
-                                            <option>Medium</option>
-                                            <option>Big</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="mb-3">
-                                            <label>Starting date</label>
-                                            <input class="datepicker-here form-control" type="text" data-language="en">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="mb-3">
-                                            <label>Ending date</label>
-                                            <input class="datepicker-here form-control" type="text" data-language="en">
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="row">
                                     <div class="col">
                                         <div class="mb-3">
                                             <label>Product Images <span class="text-danger">*</span></label>
                                             <input class="form-control" type="file" name="images[]" multiple>
-                                            @error('image')
+                                            @error('images')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>
@@ -184,7 +139,7 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label>Product Description</label>
-                                            <textarea class="form-control" name="description" placeholder="Full Description" id="" rows="5">{{old('description')}}</textarea>
+                                            <textarea class="form-control ckeditor" name="description" placeholder="Full Description" id="" rows="5">{{old('description')}}</textarea>
                                             @error('description')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror

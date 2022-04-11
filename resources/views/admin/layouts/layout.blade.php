@@ -123,11 +123,17 @@
     <script src="{{ url('/') }}/admin/assets/js/tooltip-init.js"></script>
     <script src="{{ url('/') }}/admin/assets/js/dropzone/dropzone.js"></script>
     <script src="{{ url('/') }}/admin/assets/js/dropzone/dropzone-script.js"></script>
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 
     <!-- Theme js-->
     <script src="{{ url('/') }}/admin/assets/js/script.js"></script>
     <!-- <script src="{{ url('/') }}/admin/assets/js/theme-customizer/customizer.js"></script> -->
     <!-- login js-->
     <!-- Plugin used-->
+    <script type="text/javascript">
+      $(document).ready(function () {
+          $('.ckeditor').ckeditor();
+      });
+    </script>
   </body>
 </html>

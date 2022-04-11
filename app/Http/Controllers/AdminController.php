@@ -15,12 +15,20 @@ use DB;
 
 class AdminController extends Controller
 {
+	public function __construct(){
+        if (Session::has('admin')) {
+	        $userId = Auth::guard('admin')->user()->id;
+	    }
+	    $this->redirectTo = url()->previous();
+    }
+
     public function login(){
     	try{
     		if(Session::has('admin')){
     			return redirect('admin-dashboard');
     		}
     		return view('admin/login');
+			$this->redirectTo = url()->previous();
     	}catch(\Exception $e){
     		return ($e->getMessage());
     	}

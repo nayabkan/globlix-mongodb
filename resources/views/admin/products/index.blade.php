@@ -41,7 +41,7 @@
                                         <th>Name</th>
                                         <th>Category</th>
                                         <th>Price</th>
-                                        <th>User</th>
+                                        <th>Vendor</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -56,21 +56,16 @@
                                         <td>{{ $sl }}</td>
                                         <td>
                                             <img src="{{$pro_img[0] ? url($pro_img[0]) : url($dumimg)}}" alt="img" style="max-width: 64px;">
-                                            <!-- <img src="{{ url('/') }}/admin/assets/images/ecommerce/product-table-1.png" alt=""> -->
                                         </td>
                                         <td>
                                             <h6> {{$product->title}} </h6>
                                         </td>
                                         <td>{{ \App\Models\Category::where(['_id' => $category])->pluck('title')->first() }}</td>
                                         <td>${{$product->price}}</td>
-                                        <td>{{ \App\Models\Admin::where(['_id' => $product->user_id])->pluck('name')->first() }}</td>
+                                        <td>{{ \App\Models\Vendor::where(['_id' => $product->vendor_id])->pluck('firstname')->first() }}</td>
                                         <td>
                                             <a href="{{route('editproduct',$product->_id)}}" class="btn btn-success" title="Edit Product">Edit</a>
-                                            <form method="POST" class="d-inline-block" action="#">
-                                              @csrf 
-                                              @method('delete')
-                                                  <button class="btn btn-danger btn-sm dltBtn" data-id="{{$product->_id}}" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i>Delete</button>
-                                            </form>
+                                            <a href="{{route('deleteproduct',$product->_id)}}" class="btn btn-danger" title="Delete Product">Delete</a>
                                         </td>
                                     </tr>
                                     @php $sl++; @endphp

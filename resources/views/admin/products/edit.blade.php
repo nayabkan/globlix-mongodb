@@ -25,7 +25,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form theme-form">
-                            <form action="{{route('updateproduct')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('updateproduct',$product->_id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <!-- <input name="user_id" type="hidden" value="{{ $product->user_id }}"> -->
                                 <div class="row">
@@ -52,10 +52,24 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label>Short Description <span class="text-danger">*</span></label>
-                                            <textarea class="form-control" name="short_description" placeholder="Short Description">{{$product->short_description}}</textarea>
+                                            <textarea class="form-control" name="short_description" placeholder="Short Description" rows="3">{{$product->short_description}}</textarea>
                                             @error('short_description')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="is_featured">Is Featured</label><br>
+                                            <input type="checkbox" name='is_featured' class="" id='is_featured' {{(($product->is_featured=='on')? 'checked' : '')}}> Yes                        
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="white_labeled">White Label</label><br>
+                                            <input type="checkbox" name='white_label' class="" id='white_labeled' {{(($product->white_label=='on')? 'checked' : '')}}> Yes                        
                                         </div>
                                     </div>
                                 </div>
@@ -93,7 +107,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label>Price <span class="text-danger">*</span></label>
-                                            <input class="form-control digits" type="number" name="price" placeholder="price" value="{{$product->price}}">
+                                            <input class="form-control digits" type="number" name="price" step="0.01" placeholder="price" value="{{$product->price}}">
                                             @error('price')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
@@ -102,7 +116,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label>Sale Price </label>
-                                            <input class="form-control digits" type="number" name="sale_price" placeholder="sale price" value="{{$product->sale_price}}">
+                                            <input class="form-control digits" type="number" name="sale_price" step="0.01" placeholder="sale price" value="{{$product->sale_price}}">
                                             @error('sale_price')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
@@ -119,7 +133,7 @@
                                                     <img src="{{$glimg ? url($glimg) : ''}}" style="max-width: 64px;">
                                                 @endforeach
                                             </span>
-                                            @error('image')
+                                            @error('images')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>
@@ -129,7 +143,7 @@
                                     <div class="col">
                                         <div class="mb-3">
                                             <label>Product Description</label>
-                                            <textarea class="form-control" name="description" placeholder="Full Description" id="" rows="5">{{$product->description}}</textarea>
+                                            <textarea class="form-control ckeditor" name="description" placeholder="Full Description" id="">{{$product->description}}</textarea>
                                             @error('description')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror

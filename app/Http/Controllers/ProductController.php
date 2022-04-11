@@ -44,15 +44,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $data['user_id'] = $request->user_id;
+        // $data['user_id'] = $request->user_id;
         $this->validate($request,[
             'title'=>'string|required',
             'sku'=>'string|required',
             'short_description'=>'string|required',
             'category'=>'required',
             'brand'=>'required',
-            'price'=>'integer|required',
-            'sale_price'=>'nullable|integer',
+            'price'=>'required|between:0,99.99',
+            'sale_price'=>'nullable|between:0,99.99',
             'description'=>'string|required',
             'vendor_id' =>'string|required',
             'images'=>'required',
@@ -99,7 +99,7 @@ class ProductController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Product $product)
     {
         //
     }
@@ -136,57 +136,53 @@ class ProductController extends Controller
             'short_description'=>'string|required',
             'category'=>'required',
             'brand'=>'required',
-            'price'=>'integer|required',
-            'sale_price'=>'nullable|integer',
+            'price'=>'required|between:0,99.99',
+            'sale_price'=>'nullable|between:0,99.99',
             'description'=>'string|required',
             'vendor_id' =>'string|required',
             'status' =>'string|required',
-            'images.*' => 'mimes:jpeg,png,jpg,gif,svg'
+            'images.*' => 'nullable|mimes:jpeg,png,jpg,gif,svg'
         ]);
 
-        if($request->images != ''){
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images/products'), $imageName);
-            $data['image'] = '/images/products/'.$imageName;
-            if($category->image != "" && file_exists(public_path().$category->image)){
-                $file_path = public_path().$category->image;
-                unlink($file_path);
-            }
-        }else{
-            $data['image']=$category->image;
-        }
+        $data= $request->all();
 
         if($request->hasfile('images'))
         {
+            $oldimages=json_decode($product->images);
+            foreach($oldimages as $olds){
+                $imgpth = public_path().$olds;
+                if(file_exists($imgpth)){
+                    unlink($imgpth);
+                }
+            }
+            
+
             foreach($request->file('images') as $key => $file)
             {
                 $filname= time().$key;
                 $imageName = $filname.'.'.$file->extension();
                 $file->move(public_path('images/products'), $imageName);
                 $imgs[$key] = '/images/products/'.$imageName;
-                if($product->images != "" && file_exists(public_path().$product->images)){
-                    $file_path = public_path().$product->images;
-                    unlink($file_path);
-                }
             }
             $data['images'] = json_encode($imgs);
         }else{
-            $data['images'] ='';
+            $data['images'] =$product->images;
         }
-
-        $data= $request->all();
         
-
-        
-        //dd($data);
-        // return $data;
-        //$status=$category->fill($data)->save();
-        // if($status){
-        //     request()->session()->flash('success','Product successfully updated');
-        // }
-        // else{
-        //     request()->session()->flash('error','Error occurred, Please try again!');
-        // }
+        $slug=Str::slug($request->title);
+        $count=Product::where('slug',$slug)->count();
+        if($count>0){
+            $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+        }
+        $data['slug']=$slug;
+    
+        $status=$product->fill($data)->save();
+        if($status){
+            request()->session()->flash('success','Product successfully updated');
+        }
+        else{
+            request()->session()->flash('error','Error occurred, Please try again!');
+        }
         return redirect()->route('products');
     }
 
@@ -198,29 +194,22 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id)
     { 
-        $category=Product::findOrFail($id);
-        $child_cat_id=Product::where('parent_id',$id)->pluck('_id');
-        //return $child_cat_id;
-        // dd($child_cat_id);
-        $status=$category->delete();
+        $product=Product::findOrFail($id);
+        $status=$product->delete();
         
         if($status){
-            if(count($child_cat_id)>0){
-                Category::whereIn('_id', $child_cat_id)->update(array('parent_id' => '', 'is_parent' =>'1'));
+            $oldimages=json_decode($product->images);
+            foreach($oldimages as $olds){
+                $imgpth = public_path().$olds;
+                if(file_exists($imgpth)){
+                    unlink($imgpth);
+                }
             }
-            if($category->image != ""){
-                $file_path = public_path().$category->image;
-                unlink($file_path);
-            }
-            if($category->banner != ""){
-                $file_path = public_path().$category->banner;
-                unlink($file_path);
-            }
-            request()->session()->flash('success','Category successfully deleted');
+            request()->session()->flash('success','Product successfully deleted');
         }
         else{
-            request()->session()->flash('error','Error while deleting category');
+            request()->session()->flash('error','Error while deleting product');
         }
-        return redirect()->route('category.index');
+        return redirect()->route('products');
     }
 }
