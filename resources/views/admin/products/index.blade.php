@@ -65,7 +65,12 @@
                                         <td>{{ \App\Models\Vendor::where(['_id' => $product->vendor_id])->pluck('firstname')->first() }}</td>
                                         <td>
                                             <a href="{{route('editproduct',$product->_id)}}" class="btn btn-success" title="Edit Product">Edit</a>
-                                            <a href="{{route('deleteproduct',$product->_id)}}" class="btn btn-danger" title="Delete Product">Delete</a>
+                                            <!-- <a href="{{route('deleteproduct',$product->_id)}}" class="btn btn-danger" title="Delete Product">Delete</a> -->
+                                            <form method="POST" class="d-inline-block" action="{{route('deleteproduct',[$product->_id])}}">
+                                              @csrf 
+                                              @method('post')
+                                                  <button class="btn btn-danger btn-sm dltBtn" data-id="{{$product->_id}}" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i>Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                     @php $sl++; @endphp
