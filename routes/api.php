@@ -30,6 +30,10 @@ Route::group(['middleware' => ['api'], 'namespace' => 'Api'], function(){
     Route::post( 'productdetails', [App\Http\Controllers\API\ProductController::class, 'productDetails']);
     Route::get( 'auctions', [App\Http\Controllers\API\AuctionController::class, 'index']);
 
+    Route::get( 'product-types', [App\Http\Controllers\API\ProductController::class, 'productTypes']);
+
+    Route::get( 'furniture', [App\Http\Controllers\API\ProductController::class, 'productFurniture']);
+
     // Vendors middleware routes here
     Route::group(['prefix' => 'vendor','middleware' => ['assign.guard:vendor']],function ()
     {
@@ -54,6 +58,8 @@ Route::group(['middleware' => ['api'], 'namespace' => 'Api'], function(){
         Route::get('/user-profile', [App\Http\Controllers\UserController::class, 'userProfile'])->middleware('jwt.auth');
 
         Route::post( 'send-inquiry', [App\Http\Controllers\API\InquiryController::class, 'store'])->middleware('jwt.auth');
+
+        Route::post( 'send-bid', [App\Http\Controllers\API\AuctionbidController::class, 'store'])->middleware('jwt.auth');
 
     });
 

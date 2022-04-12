@@ -211,5 +211,70 @@ class ProductController extends Controller
         ], 201);
     }
 
+    public function productTypes(){
+        $featuredprod=Product::where([['is_featured', '=', 'on']])->orderBy('_id', 'desc')->take(8)->get();
+        $saleproducts=Product::whereNotNull('sale_price')->where('sale_price', '<>', '')->orderBy('_id', 'desc')->take(8)->get();
+        $apidata=[];
+        $ftrdprods=[];
+        $saleprods=[];
+        $rateprods=[];
+        $gallery=[];
+
+        if(!$featuredprod->isEmpty()){
+            foreach ($featuredprod as $key => $prods) {
+                $ftrdprods[$key]['_id']= $prods->_id;
+                $ftrdprods[$key]['title']= $prods->title;
+                $ftrdprods[$key]['slug']= $prods->slug;
+                $ftrdprods[$key]['sku']= $prods->sku;
+                $ftrdprods[$key]['price']= $prods->price;
+                $ftrdprods[$key]['sale_price']= $prods->sale_price;
+
+                $cat_images=json_decode($prods->images);
+                $prodImages=[];
+                if( sizeof($cat_images) ){
+                    foreach ($cat_images as $ke => $catimg) {
+                        $prodImages[$ke]= url($catimg);
+                    }
+                    $ftrdprods[$key]['images'] =$prodImages;
+                }
+                
+                $ftrdprods[$key]['created_at']= $prods->created_at;
+                $ftrdprods[$key]['updated_at']= $prods->updated_at;
+            }
+        }
+
+        if(!$saleproducts->isEmpty()){
+            foreach ($saleproducts as $key => $prods) {
+                $saleprods[$key]['_id']= $prods->_id;
+                $saleprods[$key]['title']= $prods->title;
+                $saleprods[$key]['slug']= $prods->slug;
+                $saleprods[$key]['sku']= $prods->sku;
+                $saleprods[$key]['price']= $prods->price;
+                $saleprods[$key]['sale_price']= $prods->sale_price;
+
+                $cat_images=json_decode($prods->images);
+                $prodImages=[];
+                if( sizeof($cat_images) ){
+                    foreach ($cat_images as $ke => $catimg) {
+                        $prodImages[$ke]= url($catimg);
+                    }
+                    $saleprods[$key]['images'] =$prodImages;
+                }
+                
+                $saleprods[$key]['created_at']= $prods->created_at;
+                $saleprods[$key]['updated_at']= $prods->updated_at;
+            }
+        }
+
+        $apidata['featured']= $ftrdprods;
+        $apidata['onsale']= $saleprods;
+        $apidata['rated']= $rateprods;
+        
+        return response()->json($apidata);
+    }
+
+    public function productFurniture(){
+        
+    }
 
 }

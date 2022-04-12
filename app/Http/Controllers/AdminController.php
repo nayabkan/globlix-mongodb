@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Models\Auctionbid;
 use Illuminate\Support\Facades\Validator;
 use Session;
 use Auth;
@@ -94,5 +95,9 @@ class AdminController extends Controller
         return view('admin.vendors.index')->with('vendors',$vendors);
     }
 
+	public function AuctionBids(){
+        $bids=Auctionbid::orderBy('_id','DESC')->get();
+        return view('admin.bids.index')->with('bids',$bids);
+    }
 
 }

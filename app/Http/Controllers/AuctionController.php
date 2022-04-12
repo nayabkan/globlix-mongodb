@@ -25,7 +25,7 @@ class AuctionController extends Controller
     public function create()
     {
         $products=Product::where('status','active')->orderBy('title','ASC')->get();
-        $vendors=Vendor::where('status','active')->orderBy('title','ASC')->get();
+        $vendors=Vendor::all();
         return view('admin.auction.add')->with('products',$products)->with('vendors',$vendors);
     }
 
