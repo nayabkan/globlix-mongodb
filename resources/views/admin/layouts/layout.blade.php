@@ -12,11 +12,12 @@
     <!-- CSRF Token Ends -->
     <link rel="icon" href="{{ url('/') }}/admin/assets/images/favicon.jpg" type="image/x-icon">
     <link rel="shortcut icon" href="{{ url('/') }}/admin/assets/images/favicon.jpg" type="image/x-icon">
-    <title>Administrator || {{ config('app.name', 'Laravel') }}</title>
+    <title>Admin || Globlix - {{ config('app.name', 'Laravel') }}</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url('/') }}/admin/assets/css/font-awesome.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
     <!-- ico-font-->
     <link rel="stylesheet" type="text/css" href="{{ url('/') }}/admin/assets/css/vendors/icofont.css">
     <!-- Themify icon-->
@@ -42,6 +43,7 @@
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="{{ url('/') }}/admin/assets/css/style.css">
     <link id="color" rel="stylesheet" href="{{ url('/') }}/admin/assets/css/color-1.css" media="screen">
+    <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="{{ url('/') }}/admin/assets/css/responsive.css">
   </head>
@@ -124,6 +126,7 @@
     <script src="{{ url('/') }}/admin/assets/js/dropzone/dropzone.js"></script>
     <script src="{{ url('/') }}/admin/assets/js/dropzone/dropzone-script.js"></script>
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('vendor/file-manager/js/file-manager.js') }}"></script>
 
     <!-- Theme js-->
     <script src="{{ url('/') }}/admin/assets/js/script.js"></script>
@@ -133,6 +136,16 @@
     <script type="text/javascript">
       $(document).ready(function () {
           $('.ckeditor').ckeditor();
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('fm-main-block').setAttribute('style', 'height:' + window.innerHeight + 'px');
+
+        fm.$store.commit('fm/setFileCallBack', function(fileUrl) {
+          window.opener.fmSetLink(fileUrl);
+          window.close();
+        });
       });
     </script>
   </body>

@@ -33,6 +33,7 @@ Route::group(['middleware' => ['adminMiddleware']], function(){
 	Route::get( '/allusers', [App\Http\Controllers\AdminController::class, 'users'])->name('allusers');
     Route::get( '/vendors', [App\Http\Controllers\AdminController::class, 'vendors'])->name('vendors');
     Route::resource( '/countries', \App\Http\Controllers\CountryController::class );
+    Route::get( '/filemanager', [App\Http\Controllers\FileManagerController::class, 'index'])->name('filemanager');
 
     Route::get( '/bids', [App\Http\Controllers\AdminController::class, 'AuctionBids'])->name('bids');
     

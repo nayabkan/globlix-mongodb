@@ -30,6 +30,9 @@
                     <a class="sidebar-link sidebar-title link-nav" href="#"><i data-feather="image"> </i><span>Banners</span></a>
                   </li>
                   <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('filemanager')}}"><i data-feather="file"> </i><span>File Manager</span></a>
+                  </li>
+                  <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title link-nav" href="#"><i data-feather="settings"> </i><span>Settings</span></a>
                   </li>
                   <li class="sidebar-list">
