@@ -35,6 +35,9 @@ Route::group(['middleware' => ['adminMiddleware']], function(){
     Route::resource( '/countries', \App\Http\Controllers\CountryController::class );
     Route::get( '/filemanager', [App\Http\Controllers\FileManagerController::class, 'index'])->name('filemanager');
 
+    Route::get( '/product-import', [App\Http\Controllers\ProductController::class, 'importView'])->name('product-import');
+    Route::post( '/importing', [App\Http\Controllers\ProductController::class, 'importCsv'])->name('importing');
+
     Route::get( '/bids', [App\Http\Controllers\AdminController::class, 'AuctionBids'])->name('bids');
     
     Route::get( '/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');

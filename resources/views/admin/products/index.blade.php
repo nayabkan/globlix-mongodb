@@ -24,9 +24,14 @@
             <!-- Individual column searching (text inputs) Starts-->
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header p-0" style="margin-left:85%;padding-top:10px;">
-                        <a href="{{route('addproduct')}}" class="btn btn-info btn-sm float-right ml-2 mt-2" title="Add Product">Add Product</a>
+                    <div class="card-header p-0" style="padding-bottom:10px !important;margin:5px 15px;">
+                        <a href="{{route('product-import')}}" class="btn btn-info btn-sm ml-2 mt-2" title="Import Product">Import Products</a>
+                        <a href="{{route('addproduct')}}" class="btn btn-info btn-sm float-right ml-2 mt-2" title="Add Product" style="float:right;">Add Product</a>
                     </div>
+
+                    <!-- <div class="card-header p-0" style="margin-left:85%;padding-top:10px;">
+                        <a href="{{route('addproduct')}}" class="btn btn-info btn-sm float-right ml-2 mt-2" title="Add Product">Add Product</a>
+                    </div> -->
                     <!-- <div class="float-right">
                         <a href="{{route('category.create')}}" class="btn btn-info">Add Category</a>
                     </div> -->

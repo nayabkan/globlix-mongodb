@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ProductImport;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
@@ -9,6 +10,8 @@ use App\Models\Vendor;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+// use Maatwebsite\Excel\Facades\Excel;
+use Excel;
 
 class ProductController extends Controller
 {
@@ -212,4 +215,20 @@ class ProductController extends Controller
         }
         return redirect()->route('products');
     }
+
+    public function importView(Request $request){
+        return view('admin.products.import');
+    }
+
+    public function importCsv(Request $request)
+    {
+        $this->validate($request,[
+            'product'=>'required',
+            'product.*' => 'mimes:xls,xlsx,csv'
+        ]);
+        
+        Excel::import(new ProductImport, $request->file('product')->store('excel'));
+        return redirect()->back();
+    }
+    
 }
