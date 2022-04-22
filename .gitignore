@@ -1,12 +1,11 @@
-/node_modules
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
 /public/.htaccess
 /public/index.php
 .env
 .env.example
+.gitignore_old.gitignore
 .env.local
 .local.env_local
 .phpunit.result.cache
