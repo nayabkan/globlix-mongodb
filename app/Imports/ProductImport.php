@@ -22,27 +22,45 @@ class ProductImport implements ToCollection
         foreach ($rows as $row) 
         {
             if($count != 1){
-                $imgexcl = $row[12];
+                $imgexcl = $row[13];
                 $imagearray = explode(',', $imgexcl);
                 foreach($imagearray as $key => $value){
                     $primg[$key] = '/images/products/'.$value;
                 }
                 $images = json_encode($primg);
+
+                $isFeatured =  $row[4];
+                if($isFeatured=='yes'){
+                    $featured='on';
+                }else{
+                    $featured='null';
+                }
+
+                $white_label = $row[5];
+                if($white_label=='yes'){
+                    $white_label='on';
+                }else{
+                    $white_label='null';
+                }
+                
+                $parent_category =  $row[7];
+
                 Product::create([
                     'title' => $row[1],
                     'sku' => $row[2],
                     'short_description' => $row[3],
-                    'is_featured' => $row[4],
-                    'white_label' => $row[5],
+                    'is_featured' => $featured,
+                    'white_label' => $white_label,
                     'brand' => $row[6],
-                    'category' => $row[7],
-                    'price' => $row[8],
-                    'sale_price' => $row[9],
-                    'description' => $row[10],
-                    'vendor_id' => $row[11],
+                    'parent_category' => $parent_category,
+                    'category' => $row[8],
+                    'price' => $row[9],
+                    'sale_price' => $row[10],
+                    'description' => $row[11],
+                    'vendor_id' => $row[12],
                     'images' => $images,
-                    'slug' => $row[13],
-                    'status' => $row[14],
+                    'slug' => $row[14],
+                    'status' => $row[15],
                 ]);
             }
             $count++;

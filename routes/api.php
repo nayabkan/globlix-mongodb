@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\API\OpenController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(['middleware' => ['api'], 'namespace' => 'Api'], function(){
+
+    Route::get( 'categories', [App\Http\Controllers\API\OpenController::class, 'category']);
+    Route::get( 'allbrands', [App\Http\Controllers\API\OpenController::class, 'brands']);
+    Route::get( 'allvendors', [App\Http\Controllers\API\OpenController::class, 'vendors']);
 
     //Route::get( 'category', [App\Http\Controllers\API\CategoryController::class, 'index']);
     Route::get( 'parentcats', [App\Http\Controllers\API\CategoryController::class, 'parent']);

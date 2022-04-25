@@ -227,7 +227,7 @@ class ProductController extends Controller
             'product.*' => 'mimes:xls,xlsx,csv'
         ]);
         
-        Excel::import(new ProductImport, $request->file('product')->store('excel'));
+        Excel::import(new ProductImport, $request->file('product'));
         return redirect()->back();
     }
     
