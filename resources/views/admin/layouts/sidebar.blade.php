@@ -38,6 +38,9 @@
                   <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title link-nav" href="{{route('inquary.index')}}"><i data-feather="message-circle"> </i><span>Inquiries</span></a>
                   </li>
+                  <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('trades.index')}}"><i data-feather="layers"> </i><span>Trades</span></a>
+                  </li>
 
                   <li class="sidebar-main-title">
                     <div>

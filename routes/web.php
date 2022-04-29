@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,9 @@ Route::group(['middleware' => ['adminMiddleware']], function(){
     Route::get( '/editauction/{id}', [App\Http\Controllers\AuctionController::class, 'edit'])->name('editauction');
     Route::post( '/updateauction/{id}', [App\Http\Controllers\AuctionController::class, 'update'])->name('updateauction');
     Route::post( '/deleteauction', [App\Http\Controllers\AuctionController::class, 'destroy'])->name('deleteauction');
+
+    // Route::resource('/trade', [TradeController::class]);
+    Route::resource( '/trades', \App\Http\Controllers\TradeController::class );
 
  
     Route::get('logout',[App\Http\Controllers\AdminController::class, 'logout'])->name('logout');

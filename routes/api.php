@@ -38,6 +38,8 @@ Route::group(['middleware' => ['api'], 'namespace' => 'Api'], function(){
 
     Route::get( 'furniture', [App\Http\Controllers\API\ProductController::class, 'productFurniture']);
 
+    Route::get( 'trades', [App\Http\Controllers\API\TradeController::class, 'index']);
+
     // Vendors middleware routes here
     Route::group(['prefix' => 'vendor','middleware' => ['assign.guard:vendor']],function ()
     {
