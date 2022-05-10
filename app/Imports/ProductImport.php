@@ -61,6 +61,7 @@ class ProductImport implements ToCollection
                     'images' => $images,
                     'slug' => $row[14],
                     'status' => $row[15],
+                    'country' => $row[16],
                 ]);
             }
             $count++;

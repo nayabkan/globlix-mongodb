@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\ProductImport;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\Brand;
 use App\Models\Vendor;
 use Auth;
@@ -34,9 +35,10 @@ class ProductController extends Controller
     public function create()
     {
         $category=Category::orderBy('title','ASC')->get();
+        $countries=Country::orderBy('name','ASC')->get();
         $brand=Brand::orderBy('title','ASC')->get();
         $vendor=Vendor::all();
-        return view('admin.products.add')->with('categories',$category)->with('brands',$brand)->with('vendors',$vendor);
+        return view('admin.products.add')->with('categories',$category)->with('brands',$brand)->with('vendors',$vendor)->with('countries',$countries);
     }
 
     /**
@@ -54,6 +56,7 @@ class ProductController extends Controller
             'short_description'=>'string|required',
             'category'=>'required',
             'brand'=>'required',
+            'country'=>'required',
             'price'=>'required|between:0,99.99',
             'sale_price'=>'nullable|between:0,99.99',
             'description'=>'string|required',
@@ -86,6 +89,18 @@ class ProductController extends Controller
         }
         $data['slug']=$slug;
 
+        if($request->is_featured=='on'){
+            $data['is_featured']='on';
+        }else{
+            $data['is_featured']='null';
+        }
+
+        if($request->white_label=='on'){
+            $data['white_label']='on';
+        }else{
+            $data['white_label']='null';
+        }
+
         $status=Product::create($data);
         if($status){
             request()->session()->flash('success','Product successfully added');
@@ -117,10 +132,11 @@ class ProductController extends Controller
     { 
         $category=Category::orderBy('title','ASC')->get();
         $brand=Brand::orderBy('title','ASC')->get();
+        $countries=Country::orderBy('name','ASC')->get();
         $vendor=Vendor::all();
         $product=Product::findOrFail($id);
 
-        return view('admin.products.edit')->with('product',$product)->with('categories',$category)->with('brands',$brand)->with('vendors',$vendor);
+        return view('admin.products.edit')->with('product',$product)->with('categories',$category)->with('brands',$brand)->with('countries',$countries)->with('vendors',$vendor);
     }
 
     /**
@@ -139,6 +155,7 @@ class ProductController extends Controller
             'short_description'=>'string|required',
             'category'=>'required',
             'brand'=>'required',
+            'country'=>'required',
             'price'=>'required|between:0,99.99',
             'sale_price'=>'nullable|between:0,99.99',
             'description'=>'string|required',
@@ -178,6 +195,18 @@ class ProductController extends Controller
             $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
         }
         $data['slug']=$slug;
+
+        if($request->is_featured=='on'){
+            $data['is_featured']='on';
+        }else{
+            $data['is_featured']='null';
+        }
+
+        if($request->white_label=='on'){
+            $data['white_label']='on';
+        }else{
+            $data['white_label']='null';
+        }
     
         $status=$product->fill($data)->save();
         if($status){

@@ -75,7 +75,7 @@
                                 </div>
                                 
                                 <div class="row" id="brand_div">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label>Brands</label>
                                             <select name="brand" class="form-control">
@@ -89,7 +89,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="mb-3">
                                             <label>Category</label>
                                             <select name="category" class="form-control">
@@ -99,6 +99,20 @@
                                                 @endforeach
                                             </select>
                                             @error('category')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label>Country</label>
+                                            <select name="country" class="form-control">
+                                                <option value="">Select Country</option>
+                                                @foreach($countries as $key=>$countr)
+                                                    <option value="{{$countr->code}}">{{$countr->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('country')
                                                 <span class="text-danger">{{$message}}</span>
                                             @enderror
                                         </div>
