@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '6daaf3507bbeeafb2c6e1031f7082e0dc55be6f3',
+        'reference' => '157bc6b98c238c54e605e680de3350bcf1d5f94f',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -445,7 +445,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '6daaf3507bbeeafb2c6e1031f7082e0dc55be6f3',
+            'reference' => '157bc6b98c238c54e605e680de3350bcf1d5f94f',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
@@ -1377,6 +1377,15 @@
             'install_path' => __DIR__ . '/../tymon/jwt-auth',
             'aliases' => array(),
             'reference' => 'e588cb719539366c0e2f6017f975379cb73e9680',
+            'dev_requirement' => false,
+        ),
+        'unisharp/laravel-filemanager' => array(
+            'pretty_version' => 'v2.4.1',
+            'version' => '2.4.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../unisharp/laravel-filemanager',
+            'aliases' => array(),
+            'reference' => 'c1ee624a35a1f14503148437500c4a7837cb0c5f',
             'dev_requirement' => false,
         ),
         'vlucas/phpdotenv' => array(

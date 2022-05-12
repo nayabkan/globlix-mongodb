@@ -31,6 +31,7 @@ Route::group(['middleware' => ['adminMiddleware']], function(){
     Route::resource( '/category', \App\Http\Controllers\CategoryController::class );
     Route::resource( '/brands', \App\Http\Controllers\BrandController::class );
 	Route::resource( '/inquary', \App\Http\Controllers\InquaryController::class );
+    Route::resource( '/leads', \App\Http\Controllers\LeadController::class );
 	Route::get( '/allusers', [App\Http\Controllers\AdminController::class, 'users'])->name('allusers');
     Route::get( '/vendors', [App\Http\Controllers\AdminController::class, 'vendors'])->name('vendors');
     Route::resource( '/countries', \App\Http\Controllers\CountryController::class );
